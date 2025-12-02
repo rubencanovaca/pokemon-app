@@ -74,6 +74,12 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
   ```
   Formats the code using Prettier.
 
+- **Deploy to GitHub Pages:**
+  ```bash
+  npm run deploy
+  ```
+  Builds the app and deploys it to GitHub Pages [http://rubencanovaca.github.io/pokemon-app](http://rubencanovaca.github.io/pokemon-app).
+
 ## 📂 Project Structure
 
 ```
