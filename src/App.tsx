@@ -17,7 +17,7 @@ function Navigation() {
         <div className="flex justify-between h-16 items-center">
           <Link to="/" className="flex items-center gap-2 group">
             <img
-              src="/pokeball.png"
+              src={`${import.meta.env.BASE_URL}pokeball.png`}
               alt="Pokeball"
               className="h-8 w-8 transform group-hover:rotate-180 transition-transform duration-500"
             />
@@ -54,7 +54,7 @@ export default function App() {
   return (
     <MessageProvider>
       <FavoritesProvider>
-        <Router>
+        <Router basename={import.meta.env.BASE_URL}>
           <Navigation />
           <div className="pt-6">
             <Routes>

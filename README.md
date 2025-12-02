@@ -69,16 +69,18 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
   Preview the production build locally.
 
 - **Format code:**
+
   ```bash
   npm run format
   ```
+
   Formats the code using Prettier.
 
 - **Deploy to GitHub Pages:**
-  ```bash
-  npm run deploy
-  ```
-  Builds the app and deploys it to GitHub Pages [http://rubencanovaca.github.io/pokemon-app](http://rubencanovaca.github.io/pokemon-app).
+  
+  The application is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the `main` branch.
+  
+  Access the deployed app at: [http://rubencanovaca.github.io/pokemon-app](http://rubencanovaca.github.io/pokemon-app)
 
 ## 📂 Project Structure
 
