@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFavorites } from '../hooks/useFavorites';
 
 /**
@@ -54,7 +54,6 @@ export function FavoriteButton({
         )}
       </button>
 
-      {/* Tooltip */}
       <div
         className={`absolute ${positionClasses[tooltipPosition]} px-2 py-1 bg-gray-800 text-white text-xs rounded transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-lg ${showTooltip ? 'opacity-100' : 'opacity-0'}`}
       >

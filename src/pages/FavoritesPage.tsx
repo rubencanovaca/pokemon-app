@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPokemon } from '../utils/api';
 import { useFavorites } from '../hooks/useFavorites';

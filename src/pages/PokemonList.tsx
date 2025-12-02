@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchPokemonList, fetchPokemon } from '../utils/api';
 import { PokemonCard } from '../components/PokemonCard';
 import { useMessage } from '../hooks/useMessage';

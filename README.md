@@ -78,9 +78,9 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
   Formats the code using Prettier.
 
 - **Deploy to GitHub Pages:**
-  
+
   The application is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the `main` branch.
-  
+
   Access the deployed app at: [http://rubencanovaca.github.io/pokemon-app](http://rubencanovaca.github.io/pokemon-app)
 
 ## 📂 Project Structure

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchPokemon } from '../utils/api';
 import { FavoriteButton } from '../components/FavoriteButton';
@@ -102,7 +102,6 @@ export default function DetailPage() {
 
   return (
     <div className="max-w-4xl mx-auto pb-12 animate-slideIn">
-      {/* Hero Section */}
       <div
         className={`relative ${bgColor} rounded-b-[3rem] shadow-lg mb-20 pt-8 pb-24 px-8 text-white overflow-visible`}
       >
@@ -148,7 +147,6 @@ export default function DetailPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 mt-12">
-        {/* Stats Section */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
             <span className="w-1 h-6 bg-red-500 rounded-full"></span>
@@ -180,7 +178,6 @@ export default function DetailPage() {
           </div>
         </div>
 
-        {/* Moves Section */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
             <span className="w-1 h-6 bg-blue-500 rounded-full"></span>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useMessage } from '../hooks/useMessage';
 
 /**
@@ -18,23 +17,16 @@ export function ShowMessage() {
         return (
           <div
             key={message.id}
-            className={`px-6 py-4 rounded-lg shadow-lg text-white font-semibold 
-                            transition-all duration-300 ease-in-out transform
-                            animate-slideIn
-                            ${bgColor}`}
+            className={`px-6 py-4 rounded-lg shadow-lg text-white font-semibold transition-all duration-300 ease-in-out transform animate-slideIn ${bgColor}`}
             role="alert"
             aria-live="polite"
-            style={{
-              animation: 'slideIn 0.3s ease-out',
-            }}
+            style={{ animation: 'slideIn 0.3s ease-out' }}
           >
             <div className="flex items-center gap-3">
-              {/* Icon based on message type */}
               <span className="text-2xl" aria-hidden="true">
                 {message.type === 'success' ? '✓' : '✕'}
               </span>
               <span>{message.text}</span>
-              {/* Close button */}
               <button
                 onClick={() => hideMessage(message.id)}
                 className="ml-4 text-white hover:text-gray-200 transition-colors"
