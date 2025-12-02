@@ -86,11 +86,13 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
 
 ```
 pokemon-app/
+├── .github/
+│   └── workflows/
+│       └── static.yml
 ├── .vscode/
 │   └── settings.json
-├── dist/
-├── node_modules/
 ├── public/
+│   └── pokeball.png
 ├── src/
 │   ├── components/
 │   │   ├── FavoriteButton.tsx
@@ -110,8 +112,10 @@ pokemon-app/
 │   │   └── api.ts
 │   ├── App.tsx
 │   ├── index.css
-│   └── main.tsx
+│   ├── main.tsx
+│   └── vite-env.d.ts
 ├── tests/
+│   ├── App.test.tsx
 │   ├── DetailPage.test.tsx
 │   ├── FavoriteButton.test.tsx
 │   ├── FavoritesPage.test.tsx
@@ -119,6 +123,7 @@ pokemon-app/
 │   ├── PokemonList.test.tsx
 │   ├── ShowMessage.test.tsx
 │   └── setupTests.ts
+├── .gitattributes
 ├── .gitignore
 ├── .prettierignore
 ├── .prettierrc
