@@ -6,7 +6,7 @@ import { useFavorites } from '../hooks/useFavorites';
  * Displays a filled star (★) if favorited, empty star (☆) if not
  * @param props - Component props containing the Pokemon ID
  */
-export function FavoriteButton({ id }: { id: number }) {
+export function FavoriteButton({ id, name }: { id: number; name: string }) {
   const { isFavorite, toggleFavorite } = useFavorites();
 
   return (
@@ -14,7 +14,7 @@ export function FavoriteButton({ id }: { id: number }) {
       onClick={(e) => {
         // Prevent the click from bubbling up to parent Link elements
         e.stopPropagation();
-        toggleFavorite(id);
+        toggleFavorite(id, name);
       }}
     >
       {isFavorite(id) ? '★' : '☆'}

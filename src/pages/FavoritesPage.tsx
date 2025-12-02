@@ -42,7 +42,7 @@ export default function FavoritesPage() {
   }, [favorites]);
 
   return (
-    <main className="p-8">
+    <>
       <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
         &lt; Back to List
       </Link>
@@ -54,6 +54,6 @@ export default function FavoritesPage() {
         ))}
         {!loading && !favoritePokemon.length && <p className="text-gray-600">No favorites yet.</p>}
       </div>
-    </main>
+    </>
   );
 }

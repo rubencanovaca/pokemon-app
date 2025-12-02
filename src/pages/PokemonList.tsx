@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchPokemonList, fetchPokemon } from '../utils/api';
 import { PokemonCard } from '../components/PokemonCard';
+import { useMessage } from '../hooks/useMessage';
 
 /**
  * Simplified Pokemon data for displaying in the list view
@@ -20,19 +21,23 @@ type PokemonPreview = {
  */
 export default function PokemonList() {
   const [pokemon, setPokemon] = useState<PokemonPreview[]>([]);
-  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const loader = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
+  const pageRef = useRef(0);
+  const { showMessage } = useMessage();
 
   /**
    * Loads the next page of Pokemon from the API
    * Fetches 20 Pokemon at a time and appends them to the existing list
    */
   const loadMore = useCallback(() => {
-    if (loading || !hasMore) return;
+    if (loadingRef.current || !hasMore) return;
+    loadingRef.current = true;
     setLoading(true);
-    fetchPokemonList(page * 20, 20)
+    const currentPage = pageRef.current;
+    fetchPokemonList(currentPage * 20, 20)
       .then(async (data) => {
         if (data.results.length === 0) {
           setHasMore(false);
@@ -49,21 +54,23 @@ export default function PokemonList() {
           })
         );
         setPokemon((prev) => [...prev, ...results]);
-        setPage((old) => old + 1);
+        pageRef.current = currentPage + 1;
         if (data.results.length < 20) setHasMore(false);
       })
-      .finally(() => setLoading(false));
-  }, [loading, hasMore, page]);
+      .catch(() => {
+        showMessage('Failed to load Pokémon list', 'error');
+      })
+      .finally(() => {
+        setLoading(false);
+        loadingRef.current = false;
+      });
+  }, [hasMore, showMessage]);
 
-  // On mount, load the first page if list is empty
-  useEffect(() => {
-    if (pokemon.length === 0) loadMore();
-  }, []);
+
 
   // Setup IntersectionObserver for infinite scroll
   // When the loader element becomes visible, load more Pokemon
   useEffect(() => {
-    if (loading) return;
     const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) loadMore();
@@ -74,11 +81,11 @@ export default function PokemonList() {
     return () => {
       if (loader.current) observer.unobserve(loader.current);
     };
-  }, [loadMore, loading]);
+  }, [loadMore]);
 
   return (
     <>
-      <div className="flex flex-wrap gap-4 justify-center p-8">
+      <div className="flex flex-wrap gap-4 justify-center p-4">
         {pokemon.map((p) => (
           <PokemonCard key={p.id} id={p.id} name={p.name} types={p.types} />
         ))}

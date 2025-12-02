@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { useMessage } from '../hooks/useMessage';
 
 /**
  * Type definition for the Favorites context
@@ -8,7 +9,7 @@ type FavoritesContextType = {
   /** Array of Pokemon IDs that are marked as favorites */
   favorites: number[];
   /** Function to add or remove a Pokemon from favorites */
-  toggleFavorite: (id: number) => void;
+  toggleFavorite: (id: number, name: string) => void;
   /** Function to check if a Pokemon is in favorites */
   isFavorite: (id: number) => boolean;
 };
@@ -24,6 +25,7 @@ const FAVORITES_KEY = 'favorites';
  */
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<number[]>([]);
+  const { showMessage } = useMessage();
 
   // Load favorites from localStorage on mount
   useEffect(() => {
@@ -45,10 +47,21 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   /**
    * Toggles a Pokemon's favorite status
    * If the Pokemon is already a favorite, it will be removed; otherwise, it will be added
+   * Shows a success message notification after toggling
    * @param id - The Pokemon's ID
+   * @param name - The Pokemon's name (used for the message)
    */
-  function toggleFavorite(id: number) {
-    setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
+  function toggleFavorite(id: number, name: string) {
+    const isCurrentlyFavorite = favorites.includes(id);
+    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+
+    if (isCurrentlyFavorite) {
+      showMessage(`${capitalizedName} removed from favorites`, 'success');
+      setFavorites((prev) => prev.filter((f) => f !== id));
+    } else {
+      showMessage(`${capitalizedName} added to favorites`, 'success');
+      setFavorites((prev) => [...prev, id]);
+    }
   }
 
   /**

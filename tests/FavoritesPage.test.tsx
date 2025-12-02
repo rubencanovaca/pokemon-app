@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import FavoritesPage from '../src/pages/FavoritesPage';
 import { FavoritesProvider, FavoritesContext } from '../src/context/FavoritesContext';
+import { MessageProvider } from '../src/context/MessageContext';
 import { BrowserRouter } from 'react-router-dom';
 import * as api from '../src/utils/api';
 
@@ -12,9 +13,11 @@ const mockFetchPokemon = api.fetchPokemon as jest.Mock;
 
 const renderWithProviders = (ui: React.ReactElement, providerProps = {}) => {
   return render(
-    <FavoritesProvider {...providerProps}>
-      <BrowserRouter>{ui}</BrowserRouter>
-    </FavoritesProvider>
+    <MessageProvider>
+      <FavoritesProvider {...providerProps}>
+        <BrowserRouter>{ui}</BrowserRouter>
+      </FavoritesProvider>
+    </MessageProvider>
   );
 };
 

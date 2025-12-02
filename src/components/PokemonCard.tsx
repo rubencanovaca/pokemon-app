@@ -42,7 +42,7 @@ export function PokemonCard({ id, name, types }: PokemonCardProps) {
           </div>
         </div>
       </Link>
-      <FavoriteButton id={id} />
+      <FavoriteButton id={id} name={name} />
     </div>
   );
 }

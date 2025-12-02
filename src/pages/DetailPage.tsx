@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchPokemon } from '../utils/api';
 import { FavoriteButton } from '../components/FavoriteButton';
+import { useMessage } from '../hooks/useMessage';
 
 /**
  * Represents a single stat entry for a Pokemon
@@ -56,19 +57,23 @@ export default function DetailPage() {
   const { id } = useParams<{ id: string }>();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [error, setError] = useState('');
+  const { showMessage } = useMessage();
 
   // Fetch Pokemon data whenever the ID from the URL changes
   useEffect(() => {
     fetchPokemon(id!)
       .then(setPokemon)
-      .catch(() => setError('Pokémon not found'));
-  }, [id]);
+      .catch(() => {
+        setError('Pokémon not found');
+        showMessage('Failed to load Pokémon data', 'error');
+      });
+  }, [id, showMessage]);
 
   if (error) return <div>{error}</div>;
   if (!pokemon) return <div>Loading...</div>;
 
   return (
-    <main className="p-8 max-w-4xl mx-auto">
+    <>
       <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
         &lt; Back
       </Link>
@@ -82,7 +87,7 @@ export default function DetailPage() {
         height={256}
         className="mb-4"
       />
-      <FavoriteButton id={pokemon.id} />
+      <FavoriteButton id={pokemon.id} name={pokemon.name} />
 
       <div className="mb-6">
         <h3 className="text-xl font-semibold mb-2">Types</h3>
@@ -122,6 +127,6 @@ export default function DetailPage() {
           ))}
         </ul>
       </div>
-    </main>
+    </>
   );
 }

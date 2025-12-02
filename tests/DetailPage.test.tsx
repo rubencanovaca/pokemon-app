@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import DetailPage from '../src/pages/DetailPage';
 import { FavoritesProvider } from '../src/context/FavoritesContext';
+import { MessageProvider } from '../src/context/MessageContext';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as api from '../src/utils/api';
 
@@ -11,14 +12,16 @@ const mockFetchPokemon = api.fetchPokemon as jest.Mock;
 
 const renderWithProviders = (ui: React.ReactElement, { route = '/pokemon/1' } = {}) => {
   return render(
-    <FavoritesProvider>
-      <MemoryRouter initialEntries={[route]}>
-        <Routes>
-          <Route path="/pokemon/:id" element={ui} />
-          <Route path="/" element={<div>Home Page</div>} />
-        </Routes>
-      </MemoryRouter>
-    </FavoritesProvider>
+    <MessageProvider>
+      <FavoritesProvider>
+        <MemoryRouter initialEntries={[route]}>
+          <Routes>
+            <Route path="/pokemon/:id" element={ui} />
+            <Route path="/" element={<div>Home Page</div>} />
+          </Routes>
+        </MemoryRouter>
+      </FavoritesProvider>
+    </MessageProvider>
   );
 };
 
@@ -47,7 +50,7 @@ describe('DetailPage', () => {
 
   test('renders loading state initially', () => {
     // Return a promise that never resolves to test loading state
-    mockFetchPokemon.mockImplementation(() => new Promise(() => {}));
+    mockFetchPokemon.mockImplementation(() => new Promise(() => { }));
     renderWithProviders(<DetailPage />);
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
