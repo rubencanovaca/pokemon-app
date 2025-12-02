@@ -19,6 +19,7 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Testing**: [Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/)
 - **Code Formatting**: [Prettier](https://prettier.io/)
+- **CI/CD**: [GitHub Actions](https://github.com/features/actions)
 
 ## 📦 Installation
 
