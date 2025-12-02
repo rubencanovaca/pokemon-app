@@ -85,11 +85,14 @@ pokemon-app/
 ├── src/
 │   ├── components/
 │   │   ├── FavoriteButton.tsx
-│   │   └── PokemonCard.tsx
+│   │   ├── PokemonCard.tsx
+│   │   └── ShowMessage.tsx
 │   ├── context/
-│   │   └── FavoritesContext.tsx
+│   │   ├── FavoritesContext.tsx
+│   │   └── MessageContext.tsx
 │   ├── hooks/
-│   │   └── useFavorites.ts
+│   │   ├── useFavorites.ts
+│   │   └── useMessage.ts
 │   ├── pages/
 │   │   ├── DetailPage.tsx
 │   │   ├── FavoritesPage.tsx
@@ -101,8 +104,11 @@ pokemon-app/
 │   └── main.tsx
 ├── tests/
 │   ├── DetailPage.test.tsx
+│   ├── FavoriteButton.test.tsx
 │   ├── FavoritesPage.test.tsx
+│   ├── PokemonCard.test.tsx
 │   ├── PokemonList.test.tsx
+│   ├── ShowMessage.test.tsx
 │   └── setupTests.ts
 ├── .gitignore
 ├── .prettierignore
