@@ -67,6 +67,13 @@ export default function PokemonList() {
       });
   }, [hasMore, showMessage]);
 
+  // Initial load
+  useEffect(() => {
+    if (pageRef.current === 0) {
+      loadMore();
+    }
+  }, [loadMore]);
+
   // Setup IntersectionObserver for infinite scroll
   // When the loader element becomes visible, load more Pokemon
   useEffect(() => {
