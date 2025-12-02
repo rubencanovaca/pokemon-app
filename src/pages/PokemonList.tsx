@@ -66,8 +66,6 @@ export default function PokemonList() {
       });
   }, [hasMore, showMessage]);
 
-
-
   // Setup IntersectionObserver for infinite scroll
   // When the loader element becomes visible, load more Pokemon
   useEffect(() => {
@@ -84,15 +82,36 @@ export default function PokemonList() {
   }, [loadMore]);
 
   return (
-    <>
-      <div className="flex flex-wrap gap-4 justify-center p-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-slideIn">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+          <span className="text-red-600 text-4xl">●</span>
+          Pokédex
+        </h1>
+        <span className="bg-gray-100 text-gray-600 text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
+          {pokemon.length} loaded
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {pokemon.map((p) => (
           <PokemonCard key={p.id} id={p.id} name={p.name} types={p.types} />
         ))}
       </div>
-      <div ref={loader} data-testid="infinite-scroll-loader" className="h-8" />
-      {loading && <div className="text-center my-8">Loading...</div>}
-      {!hasMore && <div className="text-center my-8">No more Pokémon.</div>}
-    </>
+
+      <div
+        ref={loader}
+        data-testid="infinite-scroll-loader"
+        className="h-20 flex justify-center items-center mt-8"
+      >
+        {loading && (
+          <div className="flex flex-col items-center gap-2">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-600"></div>
+            <span className="text-gray-500 text-sm font-medium">Catching more Pokémon...</span>
+          </div>
+        )}
+        {!hasMore && <div className="text-gray-400 font-medium py-4">No more Pokémon to load.</div>}
+      </div>
+    </div>
   );
 }

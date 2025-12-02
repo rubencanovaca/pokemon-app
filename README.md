@@ -75,6 +75,7 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
   Formats the code using Prettier.
 
 ## 📂 Project Structure
+
 ```
 pokemon-app/
 ├── .vscode/

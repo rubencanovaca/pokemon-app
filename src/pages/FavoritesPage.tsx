@@ -42,18 +42,46 @@ export default function FavoritesPage() {
   }, [favorites]);
 
   return (
-    <>
-      <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
-        &lt; Back to List
-      </Link>
-      <h1 className="text-3xl font-bold mb-6">Favorite Pokémon</h1>
-      {loading && <div className="text-center">Loading...</div>}
-      <div className="flex flex-wrap gap-4 justify-center">
-        {favoritePokemon.map((p) => (
-          <PokemonCard key={p.id} id={p.id} name={p.name} types={p.types} />
-        ))}
-        {!loading && !favoritePokemon.length && <p className="text-gray-600">No favorites yet.</p>}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-slideIn">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+          <span className="text-yellow-400 text-4xl">★</span>
+          PokéFaves
+        </h1>
+        <span className="bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full">
+          {favorites.length} saved
+        </span>
       </div>
-    </>
+
+      {loading && (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+        </div>
+      )}
+
+      {!loading && favoritePokemon.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {favoritePokemon.map((p) => (
+            <PokemonCard key={p.id} id={p.id} name={p.name} types={p.types} />
+          ))}
+        </div>
+      )}
+
+      {!loading && !favoritePokemon.length && (
+        <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
+          <div className="text-6xl mb-4">🥺</div>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">No favorites yet</h3>
+          <p className="text-gray-500 mb-6">
+            Start exploring and add some Pokémon to your collection!
+          </p>
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-red-600 hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          >
+            Explore Pokémon
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }

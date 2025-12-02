@@ -50,9 +50,11 @@ describe('DetailPage', () => {
 
   test('renders loading state initially', () => {
     // Return a promise that never resolves to test loading state
-    mockFetchPokemon.mockImplementation(() => new Promise(() => { }));
-    renderWithProviders(<DetailPage />);
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+    mockFetchPokemon.mockImplementation(() => new Promise(() => {}));
+    const { container } = renderWithProviders(<DetailPage />);
+    // Check for spinner
+    const spinner = container.querySelector('.animate-spin');
+    expect(spinner).toBeInTheDocument();
   });
 
   test('renders pokemon details correctly', async () => {
@@ -60,13 +62,15 @@ describe('DetailPage', () => {
     renderWithProviders(<DetailPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/#1 Bulbasaur/i)).toBeInTheDocument();
+      expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
+      expect(screen.getByText(/#001/i)).toBeInTheDocument();
     });
 
     expect(screen.getByText('grass')).toBeInTheDocument();
     expect(screen.getByText('poison')).toBeInTheDocument();
-    expect(screen.getByText(/hp: 45/i)).toBeInTheDocument();
-    expect(screen.getByText('razor-wind')).toBeInTheDocument();
+    expect(screen.getByText(/hp/i)).toBeInTheDocument();
+    expect(screen.getByText('45')).toBeInTheDocument();
+    expect(screen.getByText('razor wind')).toBeInTheDocument();
 
     const img = screen.getByRole('img');
     expect(img).toHaveAttribute('src', 'bulbasaur.png');
@@ -87,10 +91,10 @@ describe('DetailPage', () => {
     renderWithProviders(<DetailPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/#1 Bulbasaur/i)).toBeInTheDocument();
+      expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
     });
 
-    const backLink = screen.getByText(/< Back/i);
+    const backLink = screen.getByText(/Back to List/i);
     fireEvent.click(backLink);
 
     expect(screen.getByText('Home Page')).toBeInTheDocument();
@@ -101,7 +105,7 @@ describe('DetailPage', () => {
     renderWithProviders(<DetailPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/#1 Bulbasaur/i)).toBeInTheDocument();
+      expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
     });
 
     const favBtn = screen.getByRole('button');

@@ -34,7 +34,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       try {
         setFavorites(JSON.parse(raw));
       } catch (e) {
-        console.error('Failed to parse favorites from localStorage', e);
+        showMessage('Failed to parse favorites from localStorage', 'error');
       }
     }
   }, []);

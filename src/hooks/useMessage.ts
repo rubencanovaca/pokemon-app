@@ -8,10 +8,10 @@ import { MessageContext } from '../context/MessageContext';
  * @throws Error if used outside of MessageProvider
  */
 export function useMessage() {
-    const context = useContext(MessageContext);
-    // Ensure the hook is used within the MessageProvider
-    if (context === undefined) {
-        throw new Error('useMessage must be used within a MessageProvider');
-    }
-    return context;
+  const context = useContext(MessageContext);
+  // Ensure the hook is used within the MessageProvider
+  if (context === undefined) {
+    throw new Error('useMessage must be used within a MessageProvider');
+  }
+  return context;
 }

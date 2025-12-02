@@ -78,7 +78,7 @@ describe('FavoritesPage', () => {
     });
 
     // Find the favorite button (star) and click it
-    const toggleButton = screen.getByText('★');
+    const toggleButton = screen.getByRole('button', { name: /remove bulbasaur from favorites/i });
     fireEvent.click(toggleButton);
 
     // Should disappear from the list (or show empty state)

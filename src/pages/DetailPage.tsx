@@ -59,6 +59,26 @@ export default function DetailPage() {
   const [error, setError] = useState('');
   const { showMessage } = useMessage();
 
+  const typeColors: Record<string, string> = {
+    normal: 'bg-gray-400',
+    fire: 'bg-orange-500',
+    water: 'bg-blue-500',
+    electric: 'bg-yellow-400',
+    grass: 'bg-green-500',
+    ice: 'bg-cyan-300',
+    fighting: 'bg-red-700',
+    poison: 'bg-purple-500',
+    ground: 'bg-yellow-600',
+    flying: 'bg-indigo-400',
+    psychic: 'bg-pink-500',
+    bug: 'bg-lime-500',
+    rock: 'bg-yellow-800',
+    ghost: 'bg-purple-700',
+    dragon: 'bg-indigo-600',
+    steel: 'bg-gray-500',
+    fairy: 'bg-pink-300',
+  };
+
   // Fetch Pokemon data whenever the ID from the URL changes
   useEffect(() => {
     fetchPokemon(id!)
@@ -69,64 +89,115 @@ export default function DetailPage() {
       });
   }, [id, showMessage]);
 
-  if (error) return <div>{error}</div>;
-  if (!pokemon) return <div>Loading...</div>;
+  if (error) return <div className="text-center p-8 text-red-500 font-bold">{error}</div>;
+  if (!pokemon)
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+      </div>
+    );
+
+  const mainType = pokemon.types[0].type.name;
+  const bgColor = typeColors[mainType] || 'bg-gray-500';
 
   return (
-    <>
-      <Link to="/" className="text-blue-600 hover:underline mb-4 inline-block">
-        &lt; Back
-      </Link>
-      <h2 className="text-3xl font-bold mb-4 capitalize">
-        #{pokemon.id} {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-      </h2>
-      <img
-        src={pokemon.sprites.other['official-artwork'].front_default}
-        alt={pokemon.name}
-        width={256}
-        height={256}
-        className="mb-4"
-      />
-      <FavoriteButton id={pokemon.id} name={pokemon.name} />
+    <div className="max-w-4xl mx-auto pb-12 animate-slideIn">
+      {/* Hero Section */}
+      <div
+        className={`relative ${bgColor} rounded-b-[3rem] shadow-lg mb-20 pt-8 pb-24 px-8 text-white overflow-visible`}
+      >
+        <Link
+          to="/"
+          className="absolute top-8 left-8 text-white/80 hover:text-white transition-colors flex items-center gap-2 font-medium"
+        >
+          ← Back to List
+        </Link>
 
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Types</h3>
-        <ul className="list-disc list-inside">
-          {pokemon.types.map((t) => (
-            <li key={t.type.name} className="capitalize">
-              {t.type.name}
-            </li>
-          ))}
-        </ul>
+        <div className="flex justify-between items-start mt-8">
+          <div>
+            <h1 className="text-5xl font-bold capitalize mb-2 tracking-tight">{pokemon.name}</h1>
+            <div className="flex gap-3">
+              {pokemon.types.map((t) => (
+                <span
+                  key={t.type.name}
+                  className="bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-semibold capitalize"
+                >
+                  {t.type.name}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="text-2xl font-bold opacity-80 -mt-8">
+            #{String(pokemon.id).padStart(3, '0')}
+          </div>
+        </div>
+
+        <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 z-10">
+          <img
+            src={pokemon.sprites.other['official-artwork'].front_default}
+            alt={pokemon.name}
+            width={280}
+            height={280}
+            className="drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+
+        <div className="absolute bottom-4 right-8">
+          <FavoriteButton id={pokemon.id} name={pokemon.name} tooltipPosition="top" />
+        </div>
       </div>
 
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Stats</h3>
-        <ul className="list-disc list-inside">
-          {pokemon.stats
-            .filter((s) =>
-              ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].includes(
-                s.stat.name
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-8 mt-12">
+        {/* Stats Section */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+            <span className="w-1 h-6 bg-red-500 rounded-full"></span>
+            Base Stats
+          </h3>
+          <div className="space-y-4">
+            {pokemon.stats
+              .filter((s) =>
+                ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'].includes(
+                  s.stat.name
+                )
               )
-            )
-            .map((s) => (
-              <li key={s.stat.name} className="capitalize">
-                {s.stat.name.replace('-', ' ')}: {s.base_stat}
-              </li>
-            ))}
-        </ul>
-      </div>
+              .map((s) => (
+                <div key={s.stat.name}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="capitalize text-gray-500 font-medium">
+                      {s.stat.name.replace('-', ' ')}
+                    </span>
+                    <span className="font-bold text-gray-800">{s.base_stat}</span>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${s.base_stat > 100 ? 'bg-green-500' : s.base_stat > 60 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                      style={{ width: `${Math.min(s.base_stat, 100)}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
 
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2">Moves</h3>
-        <ul className="list-disc list-inside">
-          {pokemon.moves.slice(0, 20).map((m) => (
-            <li key={m.move.name} className="capitalize">
-              {m.move.name}
-            </li>
-          ))}
-        </ul>
+        {/* Moves Section */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+            <span className="w-1 h-6 bg-blue-500 rounded-full"></span>
+            Moves
+          </h3>
+          <div className="flex flex-wrap gap-2 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            {pokemon.moves.slice(0, 20).map((m) => (
+              <span
+                key={m.move.name}
+                className="bg-gray-50 text-gray-600 px-3 py-1 rounded-lg text-sm border border-gray-200 capitalize hover:bg-gray-100 transition-colors"
+              >
+                {m.move.name.replace('-', ' ')}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

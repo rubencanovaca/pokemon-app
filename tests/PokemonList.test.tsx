@@ -102,12 +102,12 @@ beforeAll(() => {
         // This simulates the loader element being visible
         setTimeout(() => cb([{ isIntersecting: true, target: element }]), 0);
       },
-      unobserve: () => { },
-      disconnect: () => { },
+      unobserve: () => {},
+      disconnect: () => {},
       // Add a method to manually trigger intersection for testing
       triggerIntersection: () => {
         setTimeout(() => cb([{ isIntersecting: true, target: null }]), 0);
-      }
+      },
     };
     return instance;
   });
