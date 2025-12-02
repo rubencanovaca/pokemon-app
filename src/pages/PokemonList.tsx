@@ -57,7 +57,8 @@ export default function PokemonList() {
         pageRef.current = currentPage + 1;
         if (data.results.length < 20) setHasMore(false);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Error loading Pokemon:', error);
         showMessage('Failed to load Pokémon list', 'error');
       })
       .finally(() => {
