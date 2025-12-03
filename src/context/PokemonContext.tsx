@@ -19,6 +19,8 @@ interface PokemonContextType {
   setPage: Dispatch<SetStateAction<number>>;
   hasMore: boolean;
   setHasMore: Dispatch<SetStateAction<boolean>>;
+  scrollPosition: number;
+  setScrollPosition: Dispatch<SetStateAction<number>>;
 }
 
 const PokemonContext = createContext<PokemonContextType | undefined>(undefined);
@@ -33,6 +35,7 @@ export function PokemonProvider({
   const [pokemonList, setPokemonList] = useState<PokemonPreview[]>(initialState?.pokemonList || []);
   const [page, setPage] = useState(initialState?.page || 0);
   const [hasMore, setHasMore] = useState(initialState?.hasMore ?? true);
+  const [scrollPosition, setScrollPosition] = useState(initialState?.scrollPosition || 0);
 
   return (
     <PokemonContext.Provider
@@ -43,6 +46,8 @@ export function PokemonProvider({
         setPage,
         hasMore,
         setHasMore,
+        scrollPosition,
+        setScrollPosition,
       }}
     >
       {children}

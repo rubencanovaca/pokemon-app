@@ -104,19 +104,30 @@ describe('PokemonList (infinite scroll)', () => {
 import { act, renderHook } from '@testing-library/react';
 
 const TestComponent = () => {
-  const { pokemonList, setPokemonList, page, setPage, hasMore, setHasMore } = usePokemon();
+  const {
+    pokemonList,
+    setPokemonList,
+    page,
+    setPage,
+    hasMore,
+    setHasMore,
+    scrollPosition,
+    setScrollPosition,
+  } = usePokemon();
 
   return (
     <div>
       <div data-testid="pokemon-count">{pokemonList.length}</div>
       <div data-testid="page">{page}</div>
       <div data-testid="has-more">{hasMore.toString()}</div>
+      <div data-testid="scroll-position">{scrollPosition}</div>
 
       <button onClick={() => setPokemonList([{ id: 1, name: 'bulbasaur', types: ['grass'] }])}>
         Add Pokemon
       </button>
       <button onClick={() => setPage((p) => p + 1)}>Increment Page</button>
       <button onClick={() => setHasMore(false)}>Stop Loading</button>
+      <button onClick={() => setScrollPosition(100)}>Update Scroll</button>
     </div>
   );
 };
@@ -132,6 +143,7 @@ describe('PokemonContext', () => {
     expect(screen.getByTestId('pokemon-count')).toHaveTextContent('0');
     expect(screen.getByTestId('page')).toHaveTextContent('0');
     expect(screen.getByTestId('has-more')).toHaveTextContent('true');
+    expect(screen.getByTestId('scroll-position')).toHaveTextContent('0');
   });
 
   test('updates values correctly', async () => {
@@ -145,11 +157,13 @@ describe('PokemonContext', () => {
       screen.getByText('Add Pokemon').click();
       screen.getByText('Increment Page').click();
       screen.getByText('Stop Loading').click();
+      screen.getByText('Update Scroll').click();
     });
 
     expect(screen.getByTestId('pokemon-count')).toHaveTextContent('1');
     expect(screen.getByTestId('page')).toHaveTextContent('1');
     expect(screen.getByTestId('has-more')).toHaveTextContent('false');
+    expect(screen.getByTestId('scroll-position')).toHaveTextContent('100');
   });
 
   test('throws error when used outside provider', () => {

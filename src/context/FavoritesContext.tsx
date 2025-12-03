@@ -12,6 +12,8 @@ type FavoritesContextType = {
   toggleFavorite: (id: number, name: string) => void;
   /** Function to check if a Pokemon is in favorites */
   isFavorite: (id: number) => boolean;
+  scrollPosition: number;
+  setScrollPosition: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
@@ -25,6 +27,7 @@ const FAVORITES_KEY = 'favorites';
  */
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const { showMessage } = useMessage();
 
   // Load favorites from localStorage on mount
@@ -74,7 +77,9 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite }}>
+    <FavoritesContext.Provider
+      value={{ favorites, toggleFavorite, isFavorite, scrollPosition, setScrollPosition }}
+    >
       {children}
     </FavoritesContext.Provider>
   );
