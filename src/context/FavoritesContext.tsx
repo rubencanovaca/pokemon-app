@@ -1,5 +1,17 @@
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
 import { useMessage } from '../hooks/useMessage';
+
+/**
+ * Simplified Pokemon data for displaying in the favorites list
+ */
+export type Favorite = {
+  /** Pokemon's unique ID */
+  id: number;
+  /** Pokemon's name */
+  name: string;
+  /** Array of type names for this Pokemon */
+  types: string[];
+};
 
 /**
  * Type definition for the Favorites context
@@ -8,12 +20,16 @@ import { useMessage } from '../hooks/useMessage';
 type FavoritesContextType = {
   /** Array of Pokemon IDs that are marked as favorites */
   favorites: number[];
+  /** Array of full Pokemon data for favorites */
+  favoritesData: Favorite[];
+  /** Function to update the favorites data cache */
+  setFavoritesData: Dispatch<SetStateAction<Favorite[]>>;
   /** Function to add or remove a Pokemon from favorites */
   toggleFavorite: (id: number, name: string) => void;
   /** Function to check if a Pokemon is in favorites */
   isFavorite: (id: number) => boolean;
   scrollPosition: number;
-  setScrollPosition: React.Dispatch<React.SetStateAction<number>>;
+  setScrollPosition: Dispatch<SetStateAction<number>>;
 };
 
 export const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
@@ -27,6 +43,7 @@ const FAVORITES_KEY = 'favorites';
  */
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [favoritesData, setFavoritesData] = useState<Favorite[]>([]);
   const [scrollPosition, setScrollPosition] = useState(0);
   const { showMessage } = useMessage();
 
@@ -61,6 +78,8 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     if (isCurrentlyFavorite) {
       showMessage(`${capitalizedName} removed from favorites`, 'success');
       setFavorites((prev) => prev.filter((f) => f !== id));
+      // Also remove from data cache to keep it clean
+      setFavoritesData((prev) => prev.filter((f) => f.id !== id));
     } else {
       showMessage(`${capitalizedName} added to favorites`, 'success');
       setFavorites((prev) => [...prev, id]);
@@ -78,7 +97,15 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   return (
     <FavoritesContext.Provider
-      value={{ favorites, toggleFavorite, isFavorite, scrollPosition, setScrollPosition }}
+      value={{
+        favorites,
+        favoritesData,
+        setFavoritesData,
+        toggleFavorite,
+        isFavorite,
+        scrollPosition,
+        setScrollPosition,
+      }}
     >
       {children}
     </FavoritesContext.Provider>

@@ -25,10 +25,11 @@ type Favorite = {
 export default function FavoritesPage() {
   const {
     favorites,
+    favoritesData,
+    setFavoritesData,
     scrollPosition: savedScrollPosition,
     setScrollPosition: setSavedScrollPosition,
   } = useFavorites();
-  const [favoritePokemon, setFavoritePokemon] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(false);
   const currentScrollPosition = useScrollPosition();
 
@@ -46,11 +47,18 @@ export default function FavoritesPage() {
     };
   }, [currentScrollPosition, setSavedScrollPosition]);
 
-  // Fetch full Pokemon data for all favorite IDs whenever the favorites list changes
+  // Fetch full Pokemon data for new favorites
   useEffect(() => {
+    const loadedIds = new Set(favoritesData.map((f) => f.id));
+    const missingIds = favorites.filter((id) => !loadedIds.has(id));
+
+    if (missingIds.length === 0) {
+      return;
+    }
+
     setLoading(true);
     Promise.all(
-      favorites.map((id) =>
+      missingIds.map((id) =>
         fetchPokemon(id).then((data) => ({
           id: data.id,
           name: data.name,
@@ -58,9 +66,16 @@ export default function FavoritesPage() {
         }))
       )
     )
-      .then((all) => setFavoritePokemon(all))
+      .then((newFavorites) => {
+        setFavoritesData((prev) => [...prev, ...newFavorites]);
+      })
       .finally(() => setLoading(false));
-  }, [favorites]);
+  }, [favorites, favoritesData, setFavoritesData]);
+
+  // Combine favorites order with loaded data
+  const displayedFavorites = favorites
+    .map((id) => favoritesData.find((f) => f.id === id))
+    .filter((f): f is Favorite => f !== undefined);
 
   return (
     <>
@@ -81,15 +96,15 @@ export default function FavoritesPage() {
           </div>
         )}
 
-        {!loading && favoritePokemon.length > 0 && (
+        {!loading && displayedFavorites.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {favoritePokemon.map((p) => (
+            {displayedFavorites.map((p) => (
               <PokemonCard key={p.id} id={p.id} name={p.name} types={p.types} />
             ))}
           </div>
         )}
 
-        {!loading && !favoritePokemon.length && (
+        {!loading && !displayedFavorites.length && (
           <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
             <div className="text-6xl mb-4">🥺</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">No favorites yet</h3>
