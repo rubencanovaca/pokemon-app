@@ -4,6 +4,7 @@ import { PokemonCard } from '../components/PokemonCard';
 import { ScrollToTopButton } from '../components/ScrollToTopButton';
 import { useMessage } from '../hooks/useMessage';
 import useScrollPosition from '../hooks/useScrollPosition';
+import useScrollPosition from '../hooks/useScrollPosition';
 import { usePokemon } from '../context/PokemonContext';
 
 /**
@@ -23,6 +24,16 @@ type PokemonPreview = {
  * Loads Pokemon in batches of 20 as the user scrolls down
  */
 export default function PokemonList() {
+  const {
+    pokemonList,
+    setPokemonList,
+    page,
+    setPage,
+    hasMore,
+    setHasMore,
+    scrollPosition: savedScrollPosition,
+    setScrollPosition: setSavedScrollPosition,
+  } = usePokemon();
   const {
     pokemonList,
     setPokemonList,

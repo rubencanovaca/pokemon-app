@@ -5,6 +5,7 @@ import { useFavorites } from '../hooks/useFavorites';
 import { PokemonCard } from '../components/PokemonCard';
 import { ScrollToTopButton } from '../components/ScrollToTopButton';
 import useScrollPosition from '../hooks/useScrollPosition';
+import useScrollPosition from '../hooks/useScrollPosition';
 
 /**
  * Simplified Pokemon data for displaying in the favorites list
@@ -23,6 +24,11 @@ type Favorite = {
  * Fetches full Pokemon data for each favorite ID and displays them as cards
  */
 export default function FavoritesPage() {
+  const {
+    favorites,
+    scrollPosition: savedScrollPosition,
+    setScrollPosition: setSavedScrollPosition,
+  } = useFavorites();
   const {
     favorites,
     scrollPosition: savedScrollPosition,
