@@ -98,6 +98,7 @@ pokemon-app/
 │   ├── components/
 │   │   ├── FavoriteButton.tsx
 │   │   ├── PokemonCard.tsx
+│   │   ├── ScrollToTopButton.tsx
 │   │   └── ShowMessage.tsx
 │   ├── context/
 │   │   ├── FavoritesContext.tsx
@@ -105,7 +106,8 @@ pokemon-app/
 │   │   └── PokemonContext.tsx
 │   ├── hooks/
 │   │   ├── useFavorites.ts
-│   │   └── useMessage.ts
+│   │   ├── useMessage.ts
+│   │   └── useScrollPosition.ts
 │   ├── pages/
 │   │   ├── DetailPage.tsx
 │   │   ├── FavoritesPage.tsx
@@ -124,8 +126,9 @@ pokemon-app/
 │   ├── FavoritesPage.test.tsx
 │   ├── PokemonCard.test.tsx
 │   ├── PokemonList.test.tsx
-│   ├── ShowMessage.test.tsx
-│   └── setupTests.ts
+│   ├── ScrollToTopButton.test.tsx
+│   ├── setupTests.ts
+│   └── ShowMessage.test.tsx
 ├── .gitattributes
 ├── .gitignore
 ├── .prettierignore

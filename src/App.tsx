@@ -3,6 +3,7 @@ import { getBaseUrl } from './utils/env';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { MessageProvider } from './context/MessageContext';
 import { PokemonProvider } from './context/PokemonContext';
+import { useFavorites } from './hooks/useFavorites';
 import { ShowMessage } from './components/ShowMessage';
 import PokemonList from './pages/PokemonList';
 import DetailPage from './pages/DetailPage';
@@ -10,8 +11,10 @@ import FavoritesPage from './pages/FavoritesPage';
 
 function Navigation() {
   const location = useLocation();
+  const { favorites } = useFavorites();
   const isHome = location.pathname === '/';
   const isFavorites = location.pathname === '/favorites';
+  const favoritesCount = favorites.length;
 
   return (
     <nav className="sticky top-0 z-40 backdrop-blur-md bg-white/70 border-b border-gray-200 shadow-sm">
@@ -30,15 +33,16 @@ function Navigation() {
           <div className="flex gap-6">
             <Link
               to="/"
-              className={`${isHome ? 'text-red-600' : 'text-gray-600 hover:text-red-600'} font-medium transition-colors duration-200`}
+              className={`${isHome ? 'text-red-600' : 'text-gray-600 hover:text-red-600'} flex items-center gap-2 px-3 py-2 group font-medium transition-colors duration-200`}
             >
-              List
+              <span>List</span>
             </Link>
             <Link
               to="/favorites"
-              className={`${isFavorites ? 'text-red-600' : 'text-gray-600 hover:text-red-600'} font-medium transition-colors duration-200`}
+              className={`${isFavorites ? 'text-red-600' : 'text-gray-600 hover:text-red-600'} flex items-center gap-2 px-3 py-2 group font-medium transition-colors duration-200`}
             >
-              Favorites
+              <span>Favorites</span>
+              {favoritesCount > 0 && <span>({favoritesCount})</span>}
             </Link>
           </div>
         </div>
