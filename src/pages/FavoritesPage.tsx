@@ -28,6 +28,11 @@ export default function FavoritesPage() {
     scrollPosition: savedScrollPosition,
     setScrollPosition: setSavedScrollPosition,
   } = useFavorites();
+  const {
+    favorites,
+    scrollPosition: savedScrollPosition,
+    setScrollPosition: setSavedScrollPosition,
+  } = useFavorites();
   const [favoritePokemon, setFavoritePokemon] = useState<Favorite[]>([]);
   const [loading, setLoading] = useState(false);
   const currentScrollPosition = useScrollPosition();

@@ -33,6 +33,16 @@ export default function PokemonList() {
     scrollPosition: savedScrollPosition,
     setScrollPosition: setSavedScrollPosition,
   } = usePokemon();
+  const {
+    pokemonList,
+    setPokemonList,
+    page,
+    setPage,
+    hasMore,
+    setHasMore,
+    scrollPosition: savedScrollPosition,
+    setScrollPosition: setSavedScrollPosition,
+  } = usePokemon();
   const [loading, setLoading] = useState(false);
   const loader = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(false);
