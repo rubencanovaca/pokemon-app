@@ -63,13 +63,11 @@ export default function App() {
         <PokemonProvider>
           <Router basename={getBaseUrl()}>
             <Navigation />
-            <div className="pt-6">
-              <Routes>
-                <Route path="/" element={<PokemonList />} />
-                <Route path="/pokemon/:id" element={<DetailPage />} />
-                <Route path="/favorites" element={<FavoritesPage />} />
-              </Routes>
-            </div>
+            <Routes>
+              <Route path="/" element={<PokemonList />} />
+              <Route path="/pokemon/:id" element={<DetailPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
+            </Routes>
           </Router>
           <ShowMessage />
         </PokemonProvider>

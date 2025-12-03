@@ -100,6 +100,25 @@ export default function DetailPage() {
   const mainType = pokemon.types[0].type.name;
   const bgColor = typeColors[mainType] || 'bg-gray-500';
 
+  /**
+   * Determines the color class for a stat bar based on its value
+   * Uses a 10-step gradient from red (low) to green (high)
+   * @param value - The base stat value (0-255)
+   * @returns Tailwind CSS background color class
+   */
+  const getStatColor = (value: number) => {
+    if (value >= 150) return 'bg-green-600'; // Top tier
+    if (value >= 120) return 'bg-green-500'; // Excellent
+    if (value >= 100) return 'bg-green-400'; // Great
+    if (value >= 90) return 'bg-lime-400'; // Good
+    if (value >= 80) return 'bg-yellow-400'; // Above Average
+    if (value >= 70) return 'bg-amber-500'; // Average
+    if (value >= 60) return 'bg-orange-500'; // Below Average
+    if (value >= 50) return 'bg-red-400'; // Weak
+    if (value >= 30) return 'bg-red-500'; // Poor
+    return 'bg-red-600'; // Very Poor
+  };
+
   return (
     <div className="max-w-4xl mx-auto pb-12 animate-slideIn">
       <div
@@ -169,7 +188,7 @@ export default function DetailPage() {
                   </div>
                   <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${s.base_stat > 100 ? 'bg-green-500' : s.base_stat > 60 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                      className={`h-full rounded-full ${getStatColor(s.base_stat)}`}
                       style={{ width: `${Math.min(s.base_stat, 100)}%` }}
                     />
                   </div>
