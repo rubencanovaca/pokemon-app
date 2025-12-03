@@ -28,12 +28,18 @@ type FavoritesContextType = {
   toggleFavorite: (id: number, name: string) => void;
   /** Function to check if a Pokemon is in favorites */
   isFavorite: (id: number) => boolean;
+  /** Saved scroll position for the list view */
   scrollPosition: number;
+  /** Function to update the scroll position */
   setScrollPosition: Dispatch<SetStateAction<number>>;
 };
 
+/**
+ * Context object for accessing favorites state
+ */
 export const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
+/** LocalStorage key for persisting favorites */
 const FAVORITES_KEY = 'favorites';
 
 /**

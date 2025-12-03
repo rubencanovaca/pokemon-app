@@ -1,5 +1,10 @@
 import { useScrollPosition } from '../hooks/useScrollPosition';
 
+/**
+ * Button component that scrolls the window to the top when clicked
+ * Appears only when the user has scrolled down a certain distance (500px)
+ * Uses a smooth scrolling animation
+ */
 export const ScrollToTopButton = () => {
   const scrollPosition = useScrollPosition();
 
