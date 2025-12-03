@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchPokemonList, fetchPokemon } from '../utils/api';
+import { usePokemon } from '../context/PokemonContext';
+import { useMessage } from '../hooks/useMessage';
+import { useScrollPosition } from '../hooks/useScrollPosition';
 import { PokemonCard } from '../components/PokemonCard';
 import { ScrollToTopButton } from '../components/ScrollToTopButton';
-import { useMessage } from '../hooks/useMessage';
-import useScrollPosition from '../hooks/useScrollPosition';
-import { usePokemon } from '../context/PokemonContext';
 
 /**
  * Simplified Pokemon data for displaying in the list view

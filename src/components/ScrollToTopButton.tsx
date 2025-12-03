@@ -1,4 +1,4 @@
-import useScrollPosition from '../hooks/useScrollPosition';
+import { useScrollPosition } from '../hooks/useScrollPosition';
 
 export const ScrollToTopButton = () => {
   const scrollPosition = useScrollPosition();
@@ -18,7 +18,7 @@ export const ScrollToTopButton = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 z-50 animate-bounce"
+      className="fixed bottom-8 right-8 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 z-50 cursor-pointer animate-bounce"
       aria-label="Scroll to top"
     >
       <svg

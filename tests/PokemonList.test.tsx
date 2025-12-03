@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PokemonList from '../src/pages/PokemonList';
 import { FavoritesProvider } from '../src/context/FavoritesContext';
@@ -97,6 +97,57 @@ describe('PokemonList (infinite scroll)', () => {
     // In a real browser, scrolling would trigger more loads
     // In tests, this is difficult to simulate reliably
     expect(await screen.findByText(/no more pokémon/i, {}, { timeout: 10000 })).toBeInTheDocument();
+  });
+
+  it('restores scroll position', async () => {
+    const scrollToSpy = jest.fn();
+    window.scrollTo = scrollToSpy;
+
+    // Mock window.scrollY to be writable
+    Object.defineProperty(window, 'scrollY', { value: 0, writable: true });
+
+    const TestWrapper = () => {
+      const [showPage, setShowPage] = React.useState(true);
+      return (
+        <MessageProvider>
+          <FavoritesProvider>
+            <PokemonProvider>
+              <BrowserRouter>
+                {showPage && <PokemonList />}
+                <button onClick={() => setShowPage(!showPage)}>Toggle Page</button>
+              </BrowserRouter>
+            </PokemonProvider>
+          </FavoritesProvider>
+        </MessageProvider>
+      );
+    };
+
+    render(<TestWrapper />);
+
+    // Wait for initial load
+    await waitFor(() => {
+      expect(screen.getAllByText(/poke/i).length).toBeGreaterThan(0);
+    });
+
+    // Simulate scroll
+    (window as any).scrollY = 500;
+    fireEvent.scroll(window);
+
+    // Unmount page
+    fireEvent.click(screen.getByText('Toggle Page'));
+
+    // Wait for unmount
+    await waitFor(() => {
+      expect(screen.queryByText(/poke/i)).not.toBeInTheDocument();
+    });
+
+    // Remount page
+    fireEvent.click(screen.getByText('Toggle Page'));
+
+    // Verify scrollTo was called
+    await waitFor(() => {
+      expect(scrollToSpy).toHaveBeenCalledWith(0, 500);
+    });
   });
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { useScrollPosition } from '../src/hooks/useScrollPosition';
 import { ScrollToTopButton } from '../src/components/ScrollToTopButton';
-import useScrollPosition from '../src/hooks/useScrollPosition';
 
 // Mock the custom hook
 jest.mock('../src/hooks/useScrollPosition');

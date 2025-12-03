@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPokemon } from '../utils/api';
 import { useFavorites } from '../hooks/useFavorites';
+import { useScrollPosition } from '../hooks/useScrollPosition';
 import { PokemonCard } from '../components/PokemonCard';
 import { ScrollToTopButton } from '../components/ScrollToTopButton';
-import useScrollPosition from '../hooks/useScrollPosition';
 
 /**
  * Simplified Pokemon data for displaying in the favorites list

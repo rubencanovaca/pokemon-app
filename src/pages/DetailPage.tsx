@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchPokemon } from '../utils/api';
-import { FavoriteButton } from '../components/FavoriteButton';
 import { useMessage } from '../hooks/useMessage';
+import { FavoriteButton } from '../components/FavoriteButton';
 
 /**
  * Represents a single stat entry for a Pokemon
