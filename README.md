@@ -26,7 +26,7 @@ This project is a simple Pokémon explorer built with React and TypeScript. It a
 1.  **Clone the repository:**
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/rubencanovaca/pokemon-app.git
     cd pokemon-app
     ```
 
