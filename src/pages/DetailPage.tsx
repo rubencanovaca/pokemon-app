@@ -120,7 +120,7 @@ export default function DetailPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-12 animate-slideIn">
+    <div className="max-w-4xl mx-auto pb-12 animate-fadeInUp">
       <div
         className={`relative ${bgColor} rounded-b-[3rem] shadow-lg mb-20 pt-8 pb-24 px-8 text-white overflow-visible`}
       >
