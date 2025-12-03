@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { getBaseUrl } from './utils/env';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { MessageProvider } from './context/MessageContext';
+import { PokemonProvider } from './context/PokemonContext';
 import { ShowMessage } from './components/ShowMessage';
 import PokemonList from './pages/PokemonList';
 import DetailPage from './pages/DetailPage';
@@ -17,7 +19,7 @@ function Navigation() {
         <div className="flex justify-between h-16 items-center">
           <Link to="/" className="flex items-center gap-2 group">
             <img
-              src={`${import.meta.env.BASE_URL}pokeball.png`}
+              src={`${getBaseUrl()}pokeball.png`}
               alt="Pokeball"
               className="h-8 w-8 transform group-hover:rotate-180 transition-transform duration-500"
             />
@@ -54,17 +56,19 @@ export default function App() {
   return (
     <MessageProvider>
       <FavoritesProvider>
-        <Router basename={import.meta.env.BASE_URL}>
-          <Navigation />
-          <div className="pt-6">
-            <Routes>
-              <Route path="/" element={<PokemonList />} />
-              <Route path="/pokemon/:id" element={<DetailPage />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
-            </Routes>
-          </div>
-        </Router>
-        <ShowMessage />
+        <PokemonProvider>
+          <Router basename={getBaseUrl()}>
+            <Navigation />
+            <div className="pt-6">
+              <Routes>
+                <Route path="/" element={<PokemonList />} />
+                <Route path="/pokemon/:id" element={<DetailPage />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+              </Routes>
+            </div>
+          </Router>
+          <ShowMessage />
+        </PokemonProvider>
       </FavoritesProvider>
     </MessageProvider>
   );

@@ -101,7 +101,8 @@ pokemon-app/
 │   │   └── ShowMessage.tsx
 │   ├── context/
 │   │   ├── FavoritesContext.tsx
-│   │   └── MessageContext.tsx
+│   │   ├── MessageContext.tsx
+│   │   └── PokemonContext.tsx
 │   ├── hooks/
 │   │   ├── useFavorites.ts
 │   │   └── useMessage.ts
@@ -110,7 +111,8 @@ pokemon-app/
 │   │   ├── FavoritesPage.tsx
 │   │   └── PokemonList.tsx
 │   ├── utils/
-│   │   └── api.ts
+│   │   ├── api.ts
+│   │   └── env.ts
 │   ├── App.tsx
 │   ├── index.css
 │   ├── main.tsx

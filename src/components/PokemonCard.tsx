@@ -46,7 +46,7 @@ export function PokemonCard({ id, name, types }: PokemonCardProps) {
       </div>
 
       <Link to={`/pokemon/${id}`} className="block p-6 overflow-hidden rounded-2xl">
-        <div className="relative flex justify-center mb-4">
+        <div className="relative flex justify-center mb-4 min-h-[120px]">
           <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <img
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}

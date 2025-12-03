@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchPokemonList, fetchPokemon } from '../utils/api';
 import { PokemonCard } from '../components/PokemonCard';
 import { useMessage } from '../hooks/useMessage';
+import { usePokemon } from '../context/PokemonContext';
 
 /**
  * Simplified Pokemon data for displaying in the list view
@@ -20,12 +21,10 @@ type PokemonPreview = {
  * Loads Pokemon in batches of 20 as the user scrolls down
  */
 export default function PokemonList() {
-  const [pokemon, setPokemon] = useState<PokemonPreview[]>([]);
+  const { pokemonList, setPokemonList, page, setPage, hasMore, setHasMore } = usePokemon();
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
   const loader = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(false);
-  const pageRef = useRef(0);
   const { showMessage } = useMessage();
 
   /**
@@ -36,8 +35,7 @@ export default function PokemonList() {
     if (loadingRef.current || !hasMore) return;
     loadingRef.current = true;
     setLoading(true);
-    const currentPage = pageRef.current;
-    fetchPokemonList(currentPage * 20, 20)
+    fetchPokemonList(page * 20, 20)
       .then(async (data) => {
         if (data.results.length === 0) {
           setHasMore(false);
@@ -53,8 +51,12 @@ export default function PokemonList() {
             };
           })
         );
-        setPokemon((prev) => [...prev, ...results]);
-        pageRef.current = currentPage + 1;
+        setPokemonList((prev) => {
+          const existingIds = new Set(prev.map((p) => p.id));
+          const uniqueResults = results.filter((p) => !existingIds.has(p.id));
+          return [...prev, ...uniqueResults];
+        });
+        setPage((prev) => prev + 1);
         if (data.results.length < 20) setHasMore(false);
       })
       .catch((error) => {
@@ -65,14 +67,14 @@ export default function PokemonList() {
         setLoading(false);
         loadingRef.current = false;
       });
-  }, [hasMore, showMessage]);
+  }, [hasMore, page, setHasMore, setPage, setPokemonList, showMessage]);
 
   // Initial load
   useEffect(() => {
-    if (pageRef.current === 0) {
+    if (page === 0 && pokemonList.length === 0) {
       loadMore();
     }
-  }, [loadMore]);
+  }, [page, pokemonList.length, loadMore]);
 
   // Setup IntersectionObserver for infinite scroll
   // When the loader element becomes visible, load more Pokemon
@@ -97,12 +99,12 @@ export default function PokemonList() {
           Pokédex
         </h1>
         <span className="bg-gray-100 text-gray-600 text-sm font-medium px-3 py-1 rounded-full border border-gray-200">
-          {pokemon.length} loaded
+          {pokemonList.length} loaded
         </span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {pokemon.map((p) => (
+        {pokemonList.map((p) => (
           <PokemonCard key={p.id} id={p.id} name={p.name} types={p.types} />
         ))}
       </div>

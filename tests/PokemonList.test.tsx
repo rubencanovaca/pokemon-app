@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import PokemonList from '../src/pages/PokemonList';
 import { FavoritesProvider } from '../src/context/FavoritesContext';
 import { MessageProvider } from '../src/context/MessageContext';
+import { PokemonProvider, usePokemon } from '../src/context/PokemonContext';
 
 // Mock the API utilities
 jest.mock('../src/utils/api', () => {
@@ -40,9 +41,11 @@ describe('PokemonList (infinite scroll)', () => {
     render(
       <MessageProvider>
         <FavoritesProvider>
-          <BrowserRouter>
-            <PokemonList />
-          </BrowserRouter>
+          <PokemonProvider>
+            <BrowserRouter>
+              <PokemonList />
+            </BrowserRouter>
+          </PokemonProvider>
         </FavoritesProvider>
       </MessageProvider>
     );
@@ -56,9 +59,11 @@ describe('PokemonList (infinite scroll)', () => {
     render(
       <MessageProvider>
         <FavoritesProvider>
-          <BrowserRouter>
-            <PokemonList />
-          </BrowserRouter>
+          <PokemonProvider>
+            <BrowserRouter>
+              <PokemonList />
+            </BrowserRouter>
+          </PokemonProvider>
         </FavoritesProvider>
       </MessageProvider>
     );
@@ -75,9 +80,11 @@ describe('PokemonList (infinite scroll)', () => {
     render(
       <MessageProvider>
         <FavoritesProvider>
-          <BrowserRouter>
-            <PokemonList />
-          </BrowserRouter>
+          <PokemonProvider>
+            <BrowserRouter>
+              <PokemonList />
+            </BrowserRouter>
+          </PokemonProvider>
         </FavoritesProvider>
       </MessageProvider>
     );
@@ -93,6 +100,71 @@ describe('PokemonList (infinite scroll)', () => {
   });
 });
 
+// Test component to consume context
+import { act, renderHook } from '@testing-library/react';
+
+const TestComponent = () => {
+  const { pokemonList, setPokemonList, page, setPage, hasMore, setHasMore } = usePokemon();
+
+  return (
+    <div>
+      <div data-testid="pokemon-count">{pokemonList.length}</div>
+      <div data-testid="page">{page}</div>
+      <div data-testid="has-more">{hasMore.toString()}</div>
+
+      <button onClick={() => setPokemonList([{ id: 1, name: 'bulbasaur', types: ['grass'] }])}>
+        Add Pokemon
+      </button>
+      <button onClick={() => setPage((p) => p + 1)}>Increment Page</button>
+      <button onClick={() => setHasMore(false)}>Stop Loading</button>
+    </div>
+  );
+};
+
+describe('PokemonContext', () => {
+  test('provides default values', () => {
+    render(
+      <PokemonProvider>
+        <TestComponent />
+      </PokemonProvider>
+    );
+
+    expect(screen.getByTestId('pokemon-count')).toHaveTextContent('0');
+    expect(screen.getByTestId('page')).toHaveTextContent('0');
+    expect(screen.getByTestId('has-more')).toHaveTextContent('true');
+  });
+
+  test('updates values correctly', async () => {
+    render(
+      <PokemonProvider>
+        <TestComponent />
+      </PokemonProvider>
+    );
+
+    await act(async () => {
+      screen.getByText('Add Pokemon').click();
+      screen.getByText('Increment Page').click();
+      screen.getByText('Stop Loading').click();
+    });
+
+    expect(screen.getByTestId('pokemon-count')).toHaveTextContent('1');
+    expect(screen.getByTestId('page')).toHaveTextContent('1');
+    expect(screen.getByTestId('has-more')).toHaveTextContent('false');
+  });
+
+  test('throws error when used outside provider', () => {
+    // Suppress console.error for this test as we expect an error
+    const consoleSpy = jest.spyOn(console, 'error');
+    consoleSpy.mockImplementation(() => { });
+
+    expect(() => {
+      renderHook(() => usePokemon());
+    }).toThrow('usePokemon must be used within a PokemonProvider');
+
+    consoleSpy.mockRestore();
+  });
+});
+
 // Mock IntersectionObserver for JSDOM
 beforeAll(() => {
   (window as any).IntersectionObserver = jest.fn(function (cb) {
@@ -102,8 +174,8 @@ beforeAll(() => {
         // This simulates the loader element being visible
         setTimeout(() => cb([{ isIntersecting: true, target: element }]), 0);
       },
-      unobserve: () => {},
-      disconnect: () => {},
+      unobserve: () => { },
+      disconnect: () => { },
       // Add a method to manually trigger intersection for testing
       triggerIntersection: () => {
         setTimeout(() => cb([{ isIntersecting: true, target: null }]), 0);

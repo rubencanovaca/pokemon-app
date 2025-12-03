@@ -3,10 +3,15 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../src/App';
 
 // Mock page components
+jest.mock('../src/utils/env', () => ({
+  getBaseUrl: () => '/',
+}));
+
 jest.mock('../src/pages/PokemonList', () => () => (
   <div data-testid="pokemon-list">Pokemon List Page</div>
 ));
 jest.mock('../src/pages/DetailPage', () => () => <div data-testid="detail-page">Detail Page</div>);
+
 jest.mock('../src/pages/FavoritesPage', () => () => (
   <div data-testid="favorites-page">Favorites Page</div>
 ));
