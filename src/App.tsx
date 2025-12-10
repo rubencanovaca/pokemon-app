@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { getBaseUrl } from './utils/env';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { MessageProvider } from './context/MessageContext';
@@ -53,7 +53,7 @@ function Navigation() {
 
 /**
  * Root application component
- * Sets up routing with React Router and wraps the app in the FavoritesProvider
+ * Sets up routing with HashRouter (for GitHub Pages compatibility) and wraps the app in providers
  * Provides navigation between Pokemon list, detail pages, and favorites
  */
 export default function App() {
@@ -61,7 +61,7 @@ export default function App() {
     <MessageProvider>
       <FavoritesProvider>
         <PokemonProvider>
-          <Router basename={getBaseUrl()}>
+          <Router>
             <Navigation />
             <Routes>
               <Route path="/" element={<PokemonList />} />

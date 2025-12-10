@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-// Custom hook to track the scroll position of the window
+/**
+ * Custom hook to track the scroll position of the window
+ * Updates on scroll events and returns the current vertical scroll position
+ * @returns The current window.scrollY value
+ */
 export function useScrollPosition() {
   // State to store the current scroll position
   const [scrollPosition, setScrollPosition] = useState(() =>
